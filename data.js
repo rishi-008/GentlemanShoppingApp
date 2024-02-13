@@ -13,7 +13,7 @@ const menuArray = [
         emoji: "🍔",
         id: 1
     },
-        {
+    {
         name: "Beer",
         ingredients: ["grain, hops, yeast, water"],
         price: 12,
