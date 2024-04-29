@@ -1,3 +1,16 @@
 body {
     margin: 0;
-} 
+    padding: 0;
+    color: black;
+}
+
+header {
+    /* background: black; */
+    width: 600px;
+    height: 167px;
+    margin: 0;
+    padding: 0;
+    background-image: url(path/to/your/image.jpg);
+    background-size: cover;
+    background-position: center;
+}

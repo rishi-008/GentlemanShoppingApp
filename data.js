@@ -21,3 +21,15 @@ const menuArray = [
         id: 2
     }
 ]
+
+const shoppingExperienceReviews = [
+
+]
+
+const paymentInformationOfCustomers = [
+
+]
+
+const activeCoupons = [
+
+]
