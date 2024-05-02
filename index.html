@@ -11,14 +11,30 @@
     </head>
     <body>
         <header>
-            <h1>Gentlemen’s Haven</h1>
-            <h2>Refined Elegance, Tailored for You.</h2>
+            <div class="header-text">
+                <h1 class="drop-shadow-text">Gentlemen’s Haven</h1>
+                <h2 class="drop-shadow-text">Refined Elegance, Tailored for You.</h2>
+            </div>
+            
         </header>
         <main>
-
+            <ul id="products-list">
+            </ul>
+            <div class="checkout-summary">
+                <h2 class="checkout-title">Order Summary</h2>
+                <ul class="products-in-cart">
+                </ul>
+                <div class="checkout-summary-price">
+                    <span>Total Price:</span>
+                    <span id="total">$0.00</span>
+                </div>
+                <div class="checkout-button">
+                    <button class="checkout-button">Complete order</button>
+                </div>
+            </div>
         </main>
 
-	    <script src="index.js"></script>
+	    <script src="index.js" type="module"></script>
     </body>
 </html>
 
