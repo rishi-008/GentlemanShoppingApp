@@ -120,9 +120,9 @@ main {
     padding-left: 1em;
     padding-top: 2em;
 }
-/* .checkout-summary{
-
-} */
+.checkout-summary{
+    padding-bottom: 2rem;
+}
 .checkout-title{
     text-align: center;
 }
