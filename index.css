@@ -6,7 +6,7 @@ html {
 }
 body {
     width: 600px;
-    height: 100vh;
+    height: 100%;
     margin: 0 auto;
     padding: 0;
     background-color: white;
@@ -169,4 +169,31 @@ main {
     justify-content: space-between;
     align-items: center;
     width: 90%;
+}
+
+.promo-code-section {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid #757575;
+    justify-content: space-between;
+    border-radius: 4px;
+}
+
+.promo-input {
+    height: 50px;
+    width: 100%;
+    border: none;
+    padding: 0 1em;
+    outline: none;
+}
+
+.apply-button {
+    height: 50px;
+    border: none;
+    font-size: 20px;
+    background: none;
+    color: #757575;
+    padding: 0 1em;
 }
