@@ -3,6 +3,9 @@ import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.
 
 const listOfAvailableProducts = document.getElementById("products-list")
 const listOfProductsInCart = document.querySelector(".products-in-cart")
+const checkoutSummarySection = document.querySelector(".checkout-summary")
+const totalPriceSection = document.createElement('div');
+const shoppingCheckoutButtonSection  = document.createElement('div');
 
 const appSettings = {
     databaseURL: "https://gentlemens-products-default-rtdb.firebaseio.com/"
@@ -23,6 +26,9 @@ onValue(booksInDB, function(snapshot) {
             
             populateListOfAvailableProducts(currentProduct)
         }
+        // if (localStorage.getItem("productsInCart") === null) {
+        //     localStorage.setItem("totalCostOfProductsInCart", `${0}`);
+        // } 
         clearShoppingCart();
         populateShoppingCartFromLocalStorage();
     } else {
@@ -82,16 +88,22 @@ listOfAvailableProducts.addEventListener('click', function(event) {
 
 function clearShoppingCart() {
     listOfProductsInCart.innerHTML = "";
+    totalPriceSection.innerHTML = "";
+    shoppingCheckoutButtonSection.innerHTML = "";  
 }
 
 function populateShoppingCartFromLocalStorage() {
-    listOfProductsInCart.innerHTML = "";
-    const itemCost = localStorage.getItem("productsInCart");
-    const parsedItemCost = JSON.parse(itemCost);
-    for (let i = 0; i < parsedItemCost.length; i++) {
-        const currentProduct = parsedItemCost[i];
-        addItemToCart(currentProduct.name, currentProduct.cost);
-    }    
+    if (localStorage.getItem("productsInCart") != null) {
+        clearShoppingCart();
+        const itemCost = localStorage.getItem("productsInCart");
+        const parsedItemCost = JSON.parse(itemCost);
+        for (let i = 0; i < parsedItemCost.length; i++) {
+            const currentProduct = parsedItemCost[i];
+            addItemToCart(currentProduct.name, currentProduct.cost);
+        }    
+        updateTotalPriceOfShoppingCart();
+    }
+   
 }
 
 function addItemToCart(productName, productCost) {
@@ -126,3 +138,29 @@ listOfProductsInCart.addEventListener('click', function(event) {
         }
     }
 });
+
+function latestTotalPriceOfShoppingCart() {
+    let totalCartCost = 0;
+    const itemCost = localStorage.getItem("productsInCart");
+    const parsedItemCost = JSON.parse(itemCost);
+    for (let i = 0; i < parsedItemCost.length; i++) {
+        const currentProduct = parsedItemCost[i];
+        totalCartCost += parseInt(currentProduct.cost);
+    }   
+    return totalCartCost;
+}
+
+function updateTotalPriceOfShoppingCart() {
+    const totalPrice = latestTotalPriceOfShoppingCart();
+    totalPriceSection.className = "checkout-summary-price";
+    shoppingCheckoutButtonSection.className = "checkout-button";
+    totalPriceSection.innerHTML = `
+        <span>Total Price:</span>
+        <span id="total">$${totalPrice}</span>
+    `;
+    shoppingCheckoutButtonSection.innerHTML = `
+        <button class="checkout-button">Complete order</button>
+    `;
+    checkoutSummarySection.appendChild(totalPriceSection);
+    checkoutSummarySection.appendChild(shoppingCheckoutButtonSection);
+}
