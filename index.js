@@ -107,3 +107,22 @@ function addItemToCart(productName, productCost) {
     </div>`;
     listOfProductsInCart.appendChild(cartItem); 
 }
+
+listOfProductsInCart.addEventListener('click', function(event) {
+    let deleteOneItemOfNameFromCart = false;
+    if (event.target.classList.contains('remove-from-cart')) {
+        const productName = event.target.getAttribute('data-product');
+        const itemsInCart = localStorage.getItem("productsInCart");
+        const parsedItemsInCart = JSON.parse(itemsInCart);
+        for (let i = 0; i < parsedItemsInCart.length; i++) {
+            const currentProduct = parsedItemsInCart[i];
+            if (currentProduct.name === productName && deleteOneItemOfNameFromCart === false) {
+                deleteOneItemOfNameFromCart = true;
+                parsedItemsInCart.splice(i, 1);
+                localStorage.setItem("productsInCart", JSON.stringify(parsedItemsInCart));
+                clearShoppingCart();
+                populateShoppingCartFromLocalStorage();
+            }
+        }
+    }
+});
