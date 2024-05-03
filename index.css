@@ -148,3 +148,25 @@ main {
     margin: 0 auto;
     text-align: center;
 }
+
+.item-in-cart {
+    margin: 0;
+    display: flex;   
+}
+
+.products-in-cart {
+    list-style-type: none;
+}
+
+.remove-from-cart {
+    background: none;
+    border: none;
+    color: #BBBBBB;
+}
+
+.product-in-cart-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+}
