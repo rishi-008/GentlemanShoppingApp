@@ -62,6 +62,7 @@ listOfAvailableProducts.addEventListener('click', function(event) {
         // console.log(productName, productCost);
         
         if (localStorage.getItem("productsInCart") != null) {
+            itemsInCart = [];
             const itemCost = localStorage.getItem("productsInCart");
             const parsedItemCost = JSON.parse(itemCost);
             for (let i = 0; i < parsedItemCost.length; i++) {
