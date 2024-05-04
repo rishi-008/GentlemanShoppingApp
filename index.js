@@ -5,11 +5,18 @@ const listOfAvailableProducts = document.getElementById("products-list")
 const listOfProductsInCart = document.querySelector(".products-in-cart")
 const checkoutSummarySection = document.querySelector(".checkout-summary")
 const promocodeSection = document.querySelector("#promo-code-section")
-const applePromoCodeButton = document.querySelector("#apply-button")
+const applyPromoCodeButton = document.querySelector("#apply-button")
 const promocodeInput = document.querySelector("#promo-input")
+
 const totalPriceSection = document.createElement('div');
 const shoppingCheckoutButtonSection  = document.createElement('div');
+let promocodeIsInvalidMessageShown = false;
+let alreadyValidPromocodeGiven = false;
 let availablePromoCodes = [];
+let invalidPromocodeMessageOnScreen = false;
+
+const invalidPromocodeMessage = document.createElement('h3');
+invalidPromocodeMessage.className = "invalid-promocode-message";
 
 const appSettings = {
     databaseURL: "https://gentlemens-products-default-rtdb.firebaseio.com/"
@@ -176,15 +183,22 @@ function updateTotalPriceOfShoppingCart() {
     checkoutSummarySection.appendChild(shoppingCheckoutButtonSection);
 }
 
-applePromoCodeButton.addEventListener('click', function() {
+applyPromoCodeButton.addEventListener('click', function() {
     const userInputedPromocode = promocodeInput.value;
-    let promocodeIsInvalidMessageShown = false;
-    console.log(availablePromoCodes);
+    promocodeInput.value = "";
     for (let i = 0; i < availablePromoCodes.length; i++) {
         const currentPromocodeDetails = availablePromoCodes[i];
         const currentPromocodeKey = Object.keys(currentPromocodeDetails)[0];
         const currentPromocodeDiscountValue = Object.values(currentPromocodeDetails)[0];
         if (currentPromocodeKey === userInputedPromocode) {
+            const totalPriceSection = document.createElement('div');
+            totalPriceSection.className = "checkout-promotional-code";
+            totalPriceSection.innerHTML = `
+                <h3 class="promo-code-used">${currentPromocodeKey}</h3>
+                <button class="remove-promo-code">x</button>
+            `;
+            // .textContent = `${currentPromocodeKey}`; 
+            promocodeSection.appendChild(totalPriceSection);
             console.log("Promocode is valid!")
             // const totalPrice = latestTotalPriceOfShoppingCart();
             // const discountedPrice = totalPrice * 0.9;
@@ -193,15 +207,19 @@ applePromoCodeButton.addEventListener('click', function() {
             //     <span id="total">$${discountedPrice}</span>
             // `;
             // promocodeInput.value = "";
-        } else {
-            if(promocodeIsInvalidMessageShown === false) {
-                promocodeIsInvalidMessageShown = true;
-
-                const invalidPromocodeMessage = document.createElement('h3');
-                invalidPromocodeMessage.className = "invalid-promocode-message";
-                invalidPromocodeMessage.textContent = "*This promocode is invalid. Please try again."; 
-                promocodeSection.appendChild(invalidPromocodeMessage);
+            alreadyValidPromocodeGiven = true;
+            if (invalidPromocodeMessageOnScreen){
+                promocodeSection.removeChild(invalidPromocodeMessage);
             }
+
+        }   else {
+                if(promocodeIsInvalidMessageShown === false && alreadyValidPromocodeGiven === false) {
+                    promocodeIsInvalidMessageShown = true;
+                    invalidPromocodeMessageOnScreen = true;
+                    invalidPromocodeMessage.textContent = "*This promocode is invalid. Please try again."; 
+                    promocodeSection.appendChild(invalidPromocodeMessage);
+                }
         }
     }
+    
 })

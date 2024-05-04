@@ -210,3 +210,25 @@ main {
     margin: 1rem 0;
     text-align: center;
 }
+.checkout-promotional-code {
+    display: flex;
+    justify-content: space-between;
+    width: 27%;
+    margin: 1rem 1.5rem;
+    padding: 0;
+    background-color: #ECECEC; 
+    color: #696969; 
+    border-radius: 10px; 
+
+}
+
+.remove-promo-code{
+    background: none;
+    border: none;
+    color: #696969;
+    margin-right: 0.5rem;
+}
+
+.promo-code-used{
+    margin: 0.5rem 0.5rem 0.5rem 1rem;
+}
