@@ -173,6 +173,12 @@ main {
 
 .promo-code-section {
     display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.promo-code-input{
+    display: flex;
     align-items: center;
     width: 90%;
     margin: 0 auto;
@@ -196,4 +202,11 @@ main {
     background: none;
     color: #757575;
     padding: 0 1em;
+}
+
+.invalid-promocode-message{
+    color: #FF0000;
+    font-size: 16px;
+    margin: 1rem 0;
+    text-align: center;
 }

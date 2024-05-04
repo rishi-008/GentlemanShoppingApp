@@ -4,8 +4,12 @@ import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.
 const listOfAvailableProducts = document.getElementById("products-list")
 const listOfProductsInCart = document.querySelector(".products-in-cart")
 const checkoutSummarySection = document.querySelector(".checkout-summary")
+const promocodeSection = document.querySelector("#promo-code-section")
+const applePromoCodeButton = document.querySelector("#apply-button")
+const promocodeInput = document.querySelector("#promo-input")
 const totalPriceSection = document.createElement('div');
 const shoppingCheckoutButtonSection  = document.createElement('div');
+let availablePromoCodes = [];
 
 const appSettings = {
     databaseURL: "https://gentlemens-products-default-rtdb.firebaseio.com/"
@@ -13,10 +17,17 @@ const appSettings = {
 
 const app = initializeApp(appSettings)
 const database = getDatabase(app)
-const booksInDB = ref(database, "Products")
+const availableProductsInDB = ref(database, "Products")
+const promocodeInDB = ref(database, "Promo-Code")
 let itemsInCart = []
 
-onValue(booksInDB, function(snapshot) {
+onValue(promocodeInDB, function(snapshot) {
+    if (snapshot.exists()) {
+        availablePromoCodes = Object.values(snapshot.val())
+    }
+})
+
+onValue(availableProductsInDB, function(snapshot) {
     
     if (snapshot.exists()) {
         let listOfProducts = Object.values(snapshot.val())
@@ -164,3 +175,33 @@ function updateTotalPriceOfShoppingCart() {
     checkoutSummarySection.appendChild(totalPriceSection);
     checkoutSummarySection.appendChild(shoppingCheckoutButtonSection);
 }
+
+applePromoCodeButton.addEventListener('click', function() {
+    const userInputedPromocode = promocodeInput.value;
+    let promocodeIsInvalidMessageShown = false;
+    console.log(availablePromoCodes);
+    for (let i = 0; i < availablePromoCodes.length; i++) {
+        const currentPromocodeDetails = availablePromoCodes[i];
+        const currentPromocodeKey = Object.keys(currentPromocodeDetails)[0];
+        const currentPromocodeDiscountValue = Object.values(currentPromocodeDetails)[0];
+        if (currentPromocodeKey === userInputedPromocode) {
+            console.log("Promocode is valid!")
+            // const totalPrice = latestTotalPriceOfShoppingCart();
+            // const discountedPrice = totalPrice * 0.9;
+            // totalPriceSection.innerHTML = `
+            //     <span>Total Price:</span>
+            //     <span id="total">$${discountedPrice}</span>
+            // `;
+            // promocodeInput.value = "";
+        } else {
+            if(promocodeIsInvalidMessageShown === false) {
+                promocodeIsInvalidMessageShown = true;
+
+                const invalidPromocodeMessage = document.createElement('h3');
+                invalidPromocodeMessage.className = "invalid-promocode-message";
+                invalidPromocodeMessage.textContent = "*This promocode is invalid. Please try again."; 
+                promocodeSection.appendChild(invalidPromocodeMessage);
+            }
+        }
+    }
+})
