@@ -18,6 +18,9 @@ let invalidPromocodeMessageOnScreen = false;
 const invalidPromocodeMessage = document.createElement('h3');
 invalidPromocodeMessage.className = "invalid-promocode-message";
 
+const alreadyHavePromotionApplied = document.createElement('h3');
+alreadyHavePromotionApplied.className = "already-have-promotion-applied";
+
 const appSettings = {
     databaseURL: "https://gentlemens-products-default-rtdb.firebaseio.com/"
 }
@@ -191,15 +194,26 @@ applyPromoCodeButton.addEventListener('click', function() {
         const currentPromocodeKey = Object.keys(currentPromocodeDetails)[0];
         const currentPromocodeDiscountValue = Object.values(currentPromocodeDetails)[0];
         if (currentPromocodeKey === userInputedPromocode) {
-            const totalPriceSection = document.createElement('div');
-            totalPriceSection.className = "checkout-promotional-code";
-            totalPriceSection.innerHTML = `
-                <h3 class="promo-code-used">${currentPromocodeKey}</h3>
-                <button class="remove-promo-code">x</button>
-            `;
-            // .textContent = `${currentPromocodeKey}`; 
-            promocodeSection.appendChild(totalPriceSection);
-            console.log("Promocode is valid!")
+            if (invalidPromocodeMessageOnScreen){
+                promocodeSection.removeChild(invalidPromocodeMessage);
+            }
+            
+            if(localStorage.getItem("appliedValidPromocode") === null) {
+                localStorage.setItem("appliedValidPromocode", `{${currentPromocodeKey}, ${currentPromocodeDiscountValue}}`);
+                const totalPriceSection = document.createElement('div');
+                totalPriceSection.className = "checkout-promotional-code";
+                totalPriceSection.innerHTML = `
+                    <h3 class="promo-code-used">${currentPromocodeKey}</h3>
+                    <button class="remove-promo-code">x</button>
+                `;
+                // .textContent = `${currentPromocodeKey}`; 
+                promocodeSection.appendChild(totalPriceSection);
+            } else {
+                alreadyHavePromotionApplied.textContent = "*One promocode has already been applied to your order"; 
+                promocodeSection.appendChild(alreadyHavePromotionApplied);
+            }
+
+            
             // const totalPrice = latestTotalPriceOfShoppingCart();
             // const discountedPrice = totalPrice * 0.9;
             // totalPriceSection.innerHTML = `
@@ -208,18 +222,34 @@ applyPromoCodeButton.addEventListener('click', function() {
             // `;
             // promocodeInput.value = "";
             alreadyValidPromocodeGiven = true;
-            if (invalidPromocodeMessageOnScreen){
-                promocodeSection.removeChild(invalidPromocodeMessage);
-            }
+            
 
         }   else {
                 if(promocodeIsInvalidMessageShown === false && alreadyValidPromocodeGiven === false) {
+                    console.log(" reaches point where invalid promocode message should be shown")
                     promocodeIsInvalidMessageShown = true;
                     invalidPromocodeMessageOnScreen = true;
                     invalidPromocodeMessage.textContent = "*This promocode is invalid. Please try again."; 
+                    if (promocodeSection.contains(alreadyHavePromotionApplied)){
+                        console.log("already have promotion applied message removed");
+                        promocodeSection.removeChild(alreadyHavePromotionApplied);
+                    }
                     promocodeSection.appendChild(invalidPromocodeMessage);
                 }
         }
     }
-    
+    alreadyValidPromocodeGiven = false;
 })
+
+function populateAppliedPromocode() {
+    const appliedPromocode = localStorage.getItem("appliedValidPromocode");
+    if (appliedPromocode != null) {
+        const parsedAppliedPromocode = JSON.parse(appliedPromocode);
+        const promocodeKey = Object.keys(parsedAppliedPromocode)[0];
+        const promocodeValue = Object.values(parsedAppliedPromocode)[0];
+        const totalPriceSection = document.createElement('div');
+        totalPriceSection.className = "checkout-promotional-code";
+        totalPriceSection.innerHTML = `
+            <h3 class="promo-code`;
+    }
+}

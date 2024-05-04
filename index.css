@@ -210,6 +210,14 @@ main {
     margin: 1rem 0;
     text-align: center;
 }
+
+.already-have-promotion-applied{
+    color: #FF0000;
+    font-size: 16px;
+    margin: 1rem 0;
+    text-align: center;
+}
+
 .checkout-promotional-code {
     display: flex;
     justify-content: space-between;
