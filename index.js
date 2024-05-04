@@ -170,6 +170,13 @@ function latestTotalPriceOfShoppingCart() {
         const currentProduct = parsedItemCost[i];
         totalCartCost += parseInt(currentProduct.cost);
     }   
+
+    if (localStorage.getItem("appliedValidPromocode") != null) {
+        const appliedPromocode = localStorage.getItem("appliedValidPromocode");
+        const parsedAppliedPromocode = JSON.parse(appliedPromocode);
+        const promocodeValue = Object.values(parsedAppliedPromocode)[0];
+        totalCartCost = totalCartCost - parseInt(promocodeValue);
+    }
     return totalCartCost;
 }
 
@@ -201,15 +208,19 @@ applyPromoCodeButton.addEventListener('click', function() {
             }
 
             if(localStorage.getItem("appliedValidPromocode") === null) {
-                localStorage.setItem("appliedValidPromocode", `{"${currentPromocodeKey}": "${currentPromocodeDiscountValue}}"`);
-                const totalPriceSection = document.createElement('div');
-                totalPriceSection.className = "checkout-promotional-code";
-                totalPriceSection.innerHTML = `
-                    <h3 class="promo-code-used">${currentPromocodeKey}</h3>
-                    <button class="remove-promo-code">x</button>
-                `;
+                localStorage.setItem("appliedValidPromocode", `{"${currentPromocodeKey}": "${currentPromocodeDiscountValue}"}`);
+                console.log("appliedValidPromocode set in local storage")
+                // const totalPriceSection = document.createElement('div');
+                // totalPriceSection.className = "checkout-promotional-code";
+                // totalPriceSection.innerHTML = `
+                //     <h3 class="promo-code-used">${currentPromocodeKey}</h3>
+                //     <button class="remove-promo-code">x</button>
+                // `;
+
+                populateAppliedPromocode();
                 // .textContent = `${currentPromocodeKey}`; 
-                promocodeSection.appendChild(totalPriceSection);
+                // promocodeSection.appendChild(totalPriceSection);
+
             } else {
                 alreadyHavePromotionApplied.textContent = "*One promocode has already been applied to your order"; 
                 promocodeSection.appendChild(alreadyHavePromotionApplied);
@@ -226,7 +237,7 @@ applyPromoCodeButton.addEventListener('click', function() {
             // `;
             // promocodeInput.value = "";
             alreadyValidPromocodeGiven = true;
-            
+            invalidPromocodeMessageOnScreen = false;
 
         }   else {
                 if(promocodeIsInvalidMessageShown === false && alreadyValidPromocodeGiven === false) {
@@ -248,6 +259,7 @@ applyPromoCodeButton.addEventListener('click', function() {
 })
 
 function populateAppliedPromocode() {
+    console.log("populateAppliedPromocode function called")
     const appliedPromocode = localStorage.getItem("appliedValidPromocode");
     if (appliedPromocode != null) {
         const parsedAppliedPromocode = JSON.parse(appliedPromocode);
@@ -260,11 +272,30 @@ function populateAppliedPromocode() {
             <button id="remove-promo-code" class="remove-promo-code">x</button>
         `;
         promocodeSection.appendChild(totalPriceSection);
+
+        // The reduction in price when promotion code is applied
+        const promotionalItem = document.createElement('li');
+        promotionalItem.className = "item-in-cart";
+        // change button for promo code removal as the event listener function will have diff action
+        promotionalItem.innerHTML = `
+        <div class="product-in-cart-info">
+            <div class="product-name-and-remove-section">
+                <span class="promocode-applied-text">${promocodeKey}</span>
+            </div>
+            <span class="promocode-discounted-value">-$${promocodeValue}</span>
+        </div>`;
+        listOfProductsInCart.appendChild(promotionalItem); 
+
+        //total price after promo code applied
+        updateTotalPriceOfShoppingCart()
+
         const removeAppliedPromocode = document.getElementById('remove-promo-code');
         removeAppliedPromocode.addEventListener('click', function() {
             if (localStorage.getItem("appliedValidPromocode") != null) {
                 localStorage.removeItem("appliedValidPromocode");
                 promocodeSection.removeChild(promocodeSection.lastChild);
+                listOfProductsInCart.removeChild(listOfProductsInCart.lastChild); 
+                updateTotalPriceOfShoppingCart();
             }
         })
 

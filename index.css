@@ -221,7 +221,7 @@ main {
 .checkout-promotional-code {
     display: flex;
     justify-content: space-between;
-    width: 27%;
+    width: fit-content;
     margin: 1rem 1.5rem;
     padding: 0;
     background-color: #ECECEC; 
@@ -239,4 +239,12 @@ main {
 
 .promo-code-used{
     margin: 0.5rem 0.5rem 0.5rem 1rem;
+}
+
+.promocode-applied-text {
+    color: red;
+}
+
+.promocode-discounted-value {
+    color: red;
 }
