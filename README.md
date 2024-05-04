@@ -1,5 +1,8 @@
 # Gentlemen's Haven Shopping App
 
+## Where Can I Vist the App
+You can check out the deployed app here: https://dynamic-khapse-733d60.netlify.app/
+
 ## Technologies Used:
 - The Web Storage API was used to store the valid promo code that was applied in the order by the user and also the items that were added to the shopping cart by the user. The purpose for this usage was so both the items in the shopping cart and the applied valid promotional code will be persistent on the screen across tab refreshes
 - The realtime firebase NoSQL database was used to store the the list of valid promotional codes that could be applied to the order and also the list of products that are currently available.
