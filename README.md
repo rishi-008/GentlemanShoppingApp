@@ -1,21 +1,10 @@
-# co72e499baf5f48346e5975cf
+#Gentlemen's Haven Shopping App
 
-Quick start:
+##Technologies Used:
+- The Web Storage API was used to store the valid promo code that was applied in the order by the user and also the items that were added to the shopping cart by the user. The purpose for this usage was so both the items in the shopping cart and the applied valid promotional code will be persistent on the screen across tab refreshes
+- The realtime firebase NoSQL database was used to store the the list of valid promotional codes that could be applied to the order and also the list of products that are currently available.
 
-```
-$ npm install
-$ npm start
-````
-
-Head over to https://vitejs.dev/ to learn more about using vite
-## About Scrimba
-
-At Scrimba our goal is to create the best possible coding school at the cost of a gym membership! 💜
-If we succeed with this, it will give anyone who wants to become a software developer a realistic shot at succeeding, regardless of where they live and the size of their wallets 🎉
-The Frontend Developer Career Path aims to teach you everything you need to become a Junior Developer, or you could take a deep-dive with one of our advanced courses 🚀
-
-- [Our courses](https://scrimba.com/allcourses)
-- [The Frontend Career Path](https://scrimba.com/learn/frontend)
-- [Become a Scrimba Pro member](https://scrimba.com/pricing)
-
-Happy Coding!
+##Discount Codes Available To Try:
+1. Using `EarlyUserDiscount` grants a $33 dollar discount
+2. Using `YouDeserveIt` grants a $20 dollar discount
+At the time of writting this README, these are the two discount codes that are actively working as they are in the SQL Database for this project 
