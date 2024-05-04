@@ -7,6 +7,7 @@ const checkoutSummarySection = document.querySelector(".checkout-summary")
 const promocodeSection = document.querySelector("#promo-code-section")
 const applyPromoCodeButton = document.querySelector("#apply-button")
 const promocodeInput = document.querySelector("#promo-input")
+// const removeAppliedPromocode = document.querySelector("#remove-promo-code")
 
 const totalPriceSection = document.createElement('div');
 const shoppingCheckoutButtonSection  = document.createElement('div');
@@ -52,6 +53,7 @@ onValue(availableProductsInDB, function(snapshot) {
         // } 
         clearShoppingCart();
         populateShoppingCartFromLocalStorage();
+        populateAppliedPromocode();
     } else {
         listOfAvailableProducts.innerHTML = ""
     }
@@ -197,9 +199,9 @@ applyPromoCodeButton.addEventListener('click', function() {
             if (invalidPromocodeMessageOnScreen){
                 promocodeSection.removeChild(invalidPromocodeMessage);
             }
-            
+
             if(localStorage.getItem("appliedValidPromocode") === null) {
-                localStorage.setItem("appliedValidPromocode", `{${currentPromocodeKey}, ${currentPromocodeDiscountValue}}`);
+                localStorage.setItem("appliedValidPromocode", `{"${currentPromocodeKey}": "${currentPromocodeDiscountValue}}"`);
                 const totalPriceSection = document.createElement('div');
                 totalPriceSection.className = "checkout-promotional-code";
                 totalPriceSection.innerHTML = `
@@ -211,6 +213,8 @@ applyPromoCodeButton.addEventListener('click', function() {
             } else {
                 alreadyHavePromotionApplied.textContent = "*One promocode has already been applied to your order"; 
                 promocodeSection.appendChild(alreadyHavePromotionApplied);
+                alreadyValidPromocodeGiven = false;
+
             }
 
             
@@ -230,6 +234,8 @@ applyPromoCodeButton.addEventListener('click', function() {
                     promocodeIsInvalidMessageShown = true;
                     invalidPromocodeMessageOnScreen = true;
                     invalidPromocodeMessage.textContent = "*This promocode is invalid. Please try again."; 
+
+                    // this condition isn't achieving it's purpose since it's not removing the alreadyHavePromotionApplied message but I think it's fine for now
                     if (promocodeSection.contains(alreadyHavePromotionApplied)){
                         console.log("already have promotion applied message removed");
                         promocodeSection.removeChild(alreadyHavePromotionApplied);
@@ -250,6 +256,17 @@ function populateAppliedPromocode() {
         const totalPriceSection = document.createElement('div');
         totalPriceSection.className = "checkout-promotional-code";
         totalPriceSection.innerHTML = `
-            <h3 class="promo-code`;
+            <h3 class="promo-code-used">${promocodeKey}</h3>
+            <button id="remove-promo-code" class="remove-promo-code">x</button>
+        `;
+        promocodeSection.appendChild(totalPriceSection);
+        const removeAppliedPromocode = document.getElementById('remove-promo-code');
+        removeAppliedPromocode.addEventListener('click', function() {
+            if (localStorage.getItem("appliedValidPromocode") != null) {
+                localStorage.removeItem("appliedValidPromocode");
+                promocodeSection.removeChild(promocodeSection.lastChild);
+            }
+        })
+
     }
 }
