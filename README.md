@@ -11,4 +11,6 @@ You can check out the deployed app here: https://dynamic-khapse-733d60.netlify.a
 ## Discount Codes Available To Try:
 1. Using `EarlyUserDiscount` grants a $33 dollar discount
 2. Using `YouDeserveIt` grants a $20 dollar discount
-At the time of writting this README, these are the two discount codes that are actively working as they are in the SQL Database for this project 
+At the time of writting this README, these are the two discount codes that are actively working as they are in the SQL Database for this project
+
+## Difficulties faced
